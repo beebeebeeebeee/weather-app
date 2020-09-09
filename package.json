@@ -1,0 +1,22 @@
+{
+  "name": "weather-app",
+  "version": "1.0.0",
+  "description": "the weather app based on electron.js",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/beebeebeeebeee/weather-app.git"
+  },
+  "author": "Bee Mak",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/beebeebeeebeee/weather-app/issues"
+  },
+  "homepage": "https://github.com/beebeebeeebeee/weather-app#readme",
+  "devDependencies": {
+    "electron": "^10.1.1"
+  }
+}
