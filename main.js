@@ -1,8 +1,11 @@
 const electron = require("electron");
 const url = require("url");
 const path = require("path");
+const api = require("./api.json");
 
-const { app, BrowserWindow, Menu} = electron;
+const {app, BrowserWindow, Menu} = electron;
+
+console.log(api)
 
 let mainWindow;
 
@@ -11,7 +14,8 @@ let mainWindow;
 // Listen for the app to be ready
 
 app.on("ready", function () {
-    process.env.GOOGLE_API_KEY = '***REMOVED***';
+    
+    process.env.GOOGLE_API_KEY = api.GOOGLE_API;
   //create window
   mainWindow = new BrowserWindow({ width: 600, height: 400 });
   //load html into window
