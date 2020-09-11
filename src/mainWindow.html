@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Weather App</title>
+    <link rel="stylesheet" href="mainWindow.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Gayathri&display=swap" rel="stylesheet">
+</head>
+
+<body onload="getLocation()">
+
+    <div id="container">
+        <div id="weather_basic">
+            Loading...
+        </div>
+        <div id="weather_detail"></div>
+    </div>
+
+    <div id="bottom">
+        Weather app @Electron.js -by: Bee Mak<br>
+    </div>
+
+    <script>
+        const electron = require("electron");
+        const {
+            ipcRenderer
+        } = electron;
+
+        basic_html = document.getElementById('weather_basic');
+        detail_html = document.getElementById('weather_detail');
+
+        ipcRenderer.on('weather:put', function (e, data) {
+            console.log(data);
+
+            basic_html.innerHTML = `${data.name}<br>
+                    `;
+            detail_html.innerHTML = `temp: ${data.main.temp}<br>
+                    ${data.weather[0].description}
+                    `;
+        })
+
+        function success(pos) {
+            var crd = pos.coords;
+            ipcRenderer.send('location:get', crd.latitude, crd.longitude)
+        }
+
+        function error(err) {
+            console.warn(`ERROR(${err.code}): ${err.message}`);
+        }
+
+        var options = {
+            enableHighAccuracy: true,
+            timeout: 10000,
+            maximumAge: 600000
+        };
+
+        function getLocation() {
+            navigator.geolocation.getCurrentPosition(success, error, options);
+        }
+    </script>
+</body>
+
+</html>
