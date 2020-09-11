@@ -19,16 +19,21 @@ body {
 }
 
 #weather_basic {
-    width: 45%;
+    width: 55%;
     float: left;
     font-size: 70px;
     background-color: transparent;
 }
 
 #weather_detail {
-    width: 55%;
+    width: 45%;
     float: right;
     text-align: right;
     font-size: 30px;
     background-color: transparent;
+}
+
+#icon {
+    width: 50px;
+    height: 50px;
 }

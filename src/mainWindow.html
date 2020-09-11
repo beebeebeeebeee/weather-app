@@ -33,9 +33,12 @@
         ipcRenderer.on('weather:put', function (e, data) {
             console.log(data);
 
-            basic_html.innerHTML = `${data.name}<br>
+            basic_html.innerHTML = `
+                    ${data.name}<br>
+                    <img src="./icons/${data.weather[0].icon}.png" id="icon">
+                    
                     `;
-            detail_html.innerHTML = `temp: ${data.main.temp}<br>
+            detail_html.innerHTML = `temp: ${data.main.temp} °C<br>
                     ${data.weather[0].description}
                     `;
         })
