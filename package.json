@@ -21,6 +21,7 @@
   },
   "dependencies": {
     "dotenv": "^8.2.0",
-    "geolocation": "^0.2.0"
+    "geolocation": "^0.2.0",
+    "scoop": "0.0.2"
   }
 }
