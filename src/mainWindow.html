@@ -11,14 +11,19 @@
 <body onload="getLocation()">
 
     <div id="container">
-        <div id="weather_basic">
-            Loading...
+        <div id="top_container">
+            <div id="weather_basic">
+                Loading...
+            </div>
+            <div id="weather_detail"></div>
         </div>
-        <div id="weather_detail"></div>
+        <div id="future_detail"></div>
     </div>
 
     <div id="bottom">
         Weather app @Electron.js -by: Bee Mak<br>
+        api.openweathermap.org<br>
+        data.weather.gov.hk
     </div>
 
     <script>
@@ -29,17 +34,33 @@
 
         basic_html = document.getElementById('weather_basic');
         detail_html = document.getElementById('weather_detail');
+        future_html = document.getElementById('future_detail');
 
         ipcRenderer.on('weather:put', function (e, data) {
             console.log(data);
 
             basic_html.innerHTML = `
                     ${data.name}<br>
-                    <img src="./icons/${data.weather[0].icon}.png" id="icon">
+                    
                     
                     `;
-            detail_html.innerHTML = `temp: ${data.main.temp} °C<br>
+            detail_html.innerHTML = ` 
+                    <div>
+                        <img src="./icons/${data.weather[0].icon}.png" id="icon">
+                        溫度: ${data.main.temp} °C
+                    </div>
                     ${data.weather[0].description}
+                    `;
+        })
+
+        ipcRenderer.on('weather_future:put', function (e, data) {
+            console.log(data);
+
+            weatherForecast = data.weatherForecast;
+            future_html.innerHTML = `
+                    <div id="title">未來天氣 🌼</div>
+                    ${weatherForecast[0].week}<br>
+                    ${weatherForecast[0].forecastWeather}
                     `;
         })
 

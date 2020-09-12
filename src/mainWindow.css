@@ -5,7 +5,8 @@ body {
 }
 
 #container {
-    height: 340px;
+    height: 310px;
+    width: 100%;
     background-color: rgb(157, 233, 223);
     padding: 5px;
 }
@@ -16,6 +17,11 @@ body {
     font-size: 15px;
     background-color: azure;
     text-align: center;
+}
+
+#top_container {
+    width: 100%;
+    display: flex;
 }
 
 #weather_basic {
@@ -31,9 +37,35 @@ body {
     text-align: right;
     font-size: 30px;
     background-color: transparent;
+    padding-right : 5px;
+}
+
+#title {
+    font-size: 30px;
+    font-weight: 800;
+}
+
+#future_detail {
+    width: 100%;
+    text-align: middle;
+    font-size: 16px;
+    background-color: transparent;
 }
 
 #icon {
-    width: 50px;
-    height: 50px;
+    width: 32px;
+    height: 32px;
+    vertical-align: middle;
+}
+
+/* disable the highlight/ select text on the plain text*/
+:not(input):not(textarea),
+:not(input):not(textarea)::after,
+:not(input):not(textarea)::before {
+    -webkit-user-select: none;
+    user-select: none;
+    cursor: default;
+}
+input, button, textarea, :focus {
+    outline: none; // You should add some other style for :focus to help UX/a11y
 }

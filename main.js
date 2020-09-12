@@ -22,6 +22,7 @@ app.on("ready", function () {
       nodeIntegration: true,
     },
   });
+  mainWindow.hide();
   //load html into window
   mainWindow.loadURL(
     url.format({
@@ -39,18 +40,28 @@ app.on("ready", function () {
 
 //catch location:get
 ipcMain.on("location:get", function (e, lat, lon) {
-  console.log(`lat: ${lat}; lon: ${lon}`);
+  //console.log(`lat: ${lat}; lon: ${lon}`);
 
   axios.defaults.headers.post['Content-Type'] = 'application/json';
-  axios.post(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${api.WEATHER_API}&units=metric`)
+  axios.post(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${api.WEATHER_API}&units=metric&lang=zh_tw`)
   .then((response) => {
-    console.log(response.data);
+    //console.log(response.data);
     mainWindow.webContents.send("weather:put", response.data);
   })
   .catch((error) => {
     console.error(error);
   });
 
+  axios.defaults.headers.post['Content-Type'] = 'application/json';
+  axios.post(`https://data.weather.gov.hk/weatherAPI/opendata/weather.php?dataType=fnd&lang=tc`)
+  .then((response) => {
+    console.log(response.data);
+    mainWindow.webContents.send("weather_future:put", response.data);
+    mainWindow.show();
+  })
+  .catch((error) => {
+    console.error(error);
+  });
   
 });
 
