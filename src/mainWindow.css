@@ -27,8 +27,12 @@ body {
 #weather_basic {
     width: 55%;
     float: left;
-    font-size: 70px;
+    font-size: 50px;
     background-color: transparent;
+}
+
+#current_time {
+    font-size: 30px;
 }
 
 #weather_detail {
@@ -37,7 +41,7 @@ body {
     text-align: right;
     font-size: 30px;
     background-color: transparent;
-    padding-right : 5px;
+    padding-right: 5px;
 }
 
 #title {
@@ -66,6 +70,10 @@ body {
     user-select: none;
     cursor: default;
 }
-input, button, textarea, :focus {
+
+input,
+button,
+textarea,
+:focus {
     outline: none; // You should add some other style for :focus to help UX/a11y
 }

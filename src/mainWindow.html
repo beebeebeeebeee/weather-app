@@ -31,17 +31,27 @@
         const {
             ipcRenderer
         } = electron;
+        var location_name = null;
 
         basic_html = document.getElementById('weather_basic');
         detail_html = document.getElementById('weather_detail');
         future_html = document.getElementById('future_detail');
+        current_time = null;
+
+        ipcRenderer.on('name:put', function (e, data) {
+            console.log('location name');
+            console.log(data);
+
+            location_name = data.results[data.results.length - 5].address_components[0].short_name;
+        })
 
         ipcRenderer.on('weather:put', function (e, data) {
+            console.log('current weather');
             console.log(data);
 
             basic_html.innerHTML = `
-                    ${data.name}<br>
-                    
+                    ${location_name}
+                    <div id="current_time"></div>
                     
                     `;
             detail_html.innerHTML = ` 
@@ -51,9 +61,12 @@
                     </div>
                     ${data.weather[0].description}
                     `;
+
+            current_time = document.getElementById('current_time');
         })
 
         ipcRenderer.on('weather_future:put', function (e, data) {
+            console.log('future weather');
             console.log(data);
 
             weatherForecast = data.weatherForecast;
@@ -62,6 +75,12 @@
                     ${weatherForecast[0].week}<br>
                     ${weatherForecast[0].forecastWeather}
                     `;
+        })
+
+        ipcRenderer.on('time:put', function (e, data) {
+            if (current_time != null) {
+                current_time.innerHTML = data;
+            }
         })
 
         function success(pos) {
