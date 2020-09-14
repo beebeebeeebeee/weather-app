@@ -7,7 +7,15 @@ const api = require("./api.json");
 process.env.NODE_ENV = "develop";
 const { app, BrowserWindow, Menu, ipcMain } = electron;
 
-let week = ["星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六"]
+let week = [
+  "星期日",
+  "星期一",
+  "星期二",
+  "星期三",
+  "星期四",
+  "星期五",
+  "星期六",
+];
 let mainWindow;
 
 // Listen for the app to be ready
@@ -37,18 +45,6 @@ app.on("ready", function () {
   const mainMenu = Menu.buildFromTemplate(mainMenuTemplate);
   //insert menu
   Menu.setApplicationMenu(mainMenu);
-
-  setInterval(() => {
-    var today = new Date();
-    var weekday = week[today.getDay()];
-    var h = ("0" + today.getHours()).slice(-2);
-    var m = today.getMinutes();
-    var s = today.getSeconds();
-    m = checkTime(m);
-    s = checkTime(s);
-
-    mainWindow.webContents.send("time:put", `${weekday} ${h}:${m}:${s}`);
-  }, 500);
 });
 
 function checkTime(i) {
@@ -60,7 +56,6 @@ function checkTime(i) {
 
 //catch location:get
 ipcMain.on("location:get", function (e, lat, lon) {
-
   axios.defaults.headers.post["Content-Type"] = "application/json";
   axios
     .post(
@@ -72,7 +67,8 @@ ipcMain.on("location:get", function (e, lat, lon) {
     })
     .catch((error) => {
       console.error(error);
-    });33
+    });
+  33;
 
   axios.defaults.headers.post["Content-Type"] = "application/json";
   axios
@@ -82,6 +78,40 @@ ipcMain.on("location:get", function (e, lat, lon) {
     .then((response) => {
       //console.log(response.data);
       mainWindow.webContents.send("weather:put", response.data);
+
+      timezone = parseInt(response.data.timezone / 3600);
+      index = Date().indexOf("+");
+      current_timezone = parseInt(Date().substring(index + 1, index + 5)) / 100;
+
+      setInterval(() => {
+        var today = new Date();
+        var extra_day = 0;
+        var time_h = today.getHours() + (timezone - current_timezone);
+        if (time_h >= 24) {
+          time_h -= 24;
+          extra_day++;
+        } else if (time_h < 0) {
+          time_h += 24;
+          extra_day--;
+        }
+        var h = ("0" + time_h).slice(-2);
+        var m = today.getMinutes();
+        var s = today.getSeconds();
+
+        var time_week = today.getDay() + extra_day;
+        var weekday =
+          week[
+            time_week > 6
+              ? time_week - 7
+              : time_week < 0
+              ? time_week + 7
+              : time_week
+          ];
+        m = checkTime(m);
+        s = checkTime(s);
+
+        mainWindow.webContents.send("time:put", `${weekday} ${h}:${m}:${s}`);
+      }, 500);
     })
     .catch((error) => {
       console.error(error);
